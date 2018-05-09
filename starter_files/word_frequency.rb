@@ -4,18 +4,41 @@ class Wordfreq
     'were', 'will', 'with']
 
   def initialize(filename)
+    @filename = filename
   end
 
   def frequency(word)
+      string = File.read @filename
+      file_downcase = string.downcase
+      file_nopunct = file_downcase.gsub(/[^a-z\s]/ , ' ')
+      ary = file_nopunct.split(' ')
+      filtered_ary = ary.delete_if { |a| STOP_WORDS.include?(a)}
+      num = filtered_ary.count(word)
   end
 
   def frequencies
+    string = File.read @filename
+    file_downcase = string.downcase
+    file_nopunct = file_downcase.gsub(/[^a-z\s]/ , ' ')
+    ary = file_nopunct.split(' ')
+    filtered_ary = ary.delete_if { |a| STOP_WORDS.include?(a)}
+    no_repeats = filtered_ary.uniq
+    freq_results = no_repeats.map do |x|
+                    numb = frequency(x)
+                    [x, numb]
+                  end
+    freq_results.to_h
   end
 
   def top_words(number)
+    hash = frequencies
+    array = hash.to_a
+    sorted = array.sort_by { |k, v| [-v, k] }
+    (0..(number - 1)).map { |i| sorted[i] }
   end
 
   def print_report
+    top_words(5) 
   end
 end
 
