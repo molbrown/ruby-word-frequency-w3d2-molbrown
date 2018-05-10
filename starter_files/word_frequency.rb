@@ -37,8 +37,15 @@ class Wordfreq
     (0..(number - 1)).map { |i| sorted[i] }
   end
 
-  def print_report
-    top_words(5) 
+  def print_report(10)
+    final_array = top_words
+    str = ""
+    s = "*"
+    final_array.each do |a, b|
+        (1..b).each { |i| str+= s }
+        puts "#{a} | #{b} #{str}"
+    end
+
   end
 end
 
